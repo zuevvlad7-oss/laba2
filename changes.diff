@@ -1,0 +1,19 @@
+--- appsqlxss.py
++++ app.py
+@@ SQL-инъекция @@
+- sql=(
+-     "SELECT id, username, email FROM users"
+-     f"WHERE username='{query}'"
+- )
+- with sqlite3.connect(DATABASE) as conn:
+-     users=conn.execute(sql).fetchall()
+
++ sql="SELECT id, username, email FROM users WHERE username = ?"
++ with sqlite3.connect(DATABASE) as conn:
++     users=conn.execute(sql< (query,)).fetchall()
+@@ Stored XSS пользователи @@
+- result+=f"<li>{user[1]}-{user[2]}</li>}"
++ result+=f"<li>{escape(user[1])}-{escape(user[2])}</li>"
+@@ Stored XSS главная страница @@
+- html+=f"<li>{user[1]}-{user[2]}</li>"
++ html+=f"<li>{escape(user[1])}-{escape(user[2])}</li>"
